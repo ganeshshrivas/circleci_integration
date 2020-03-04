@@ -4,7 +4,6 @@ default: &default
   password: postgres
   host: localhost
 
-
 development:
   <<: *default
   database: circleci_dev
@@ -13,6 +12,6 @@ production:
   <<: *default
   database: circleci_prod
 
-production:
+test:
   <<: *default
   database: circleci_test
