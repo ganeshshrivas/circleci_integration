@@ -57,20 +57,13 @@ jobs: # a collection of steps
           name: Wait for DB
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
-      - run:
-          name: Database Setup
-          command: |
-            bundle exec rake db:create
-            bundle exec rake db:schema:load
+      # Database setup
+      - run: RAILS_ENV=test bundle exec rake db:reset
 
       - run:
           name: Run rspec in parallel
           command: |
-            bundle exec rspec --profile 10 \
-                              --format RspecJunitFormatter \
-                              --out test_results/rspec.xml \
-                              --format progress \
-                              $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+            bundle exec rspec 
 
       # Save test results for timing analysis
       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
